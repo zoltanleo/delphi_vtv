@@ -191,8 +191,7 @@ begin
     with Header.Columns.Items[i] do
     begin
       CheckType:= ctNone;
-      MinWidth:= 50;
-      MaxWidth:= 100;
+      Width:= 50;
       CaptionAlignment:= taCenter;
       Text:= 'ID';
     end;
@@ -203,8 +202,7 @@ begin
     with Header.Columns.Items[i] do
     begin
       CheckType:= ctNone;
-      MinWidth:= 50;
-      MaxWidth:= 100;
+      Width:= 50;
       CaptionAlignment:= taCenter;
       Text:= 'Parent ID';
     end;
@@ -215,8 +213,7 @@ begin
     with Header.Columns.Items[i] do
     begin
       CheckType:= ctNone;
-      MinWidth:= 50;
-      MaxWidth:= 100;
+      Width:= 50;
       CaptionAlignment:= taCenter;
       Text:= 'Код МКБ';
     end;

@@ -178,8 +178,6 @@ begin
                                   toAutoTristateTracking, toAutoDeleteMovedNodes,
                                   toAutoChangeScale];
 
-
-    Header.AutoSizeIndex:= 2;
     Header.Options:= Header.Options
                       + [hoAutoResize, hoColumnResize, {hoOwnerDraw,} hoShowHint, hoShowSortGlyphs, hoVisible]
                       - [hoDrag];
@@ -192,7 +190,6 @@ begin
     begin
       CheckType:= ctNone;
       MinWidth:= 50;
-      MaxWidth:= 100;
       CaptionAlignment:= taCenter;
       Text:= 'ID';
     end;
@@ -204,9 +201,8 @@ begin
     begin
       CheckType:= ctNone;
       MinWidth:= 50;
-      MaxWidth:= 100;
       CaptionAlignment:= taCenter;
-      Text:= 'Parent ID';
+      Caption:= 'Parent ID';
     end;
 
     Header.Columns.Add;
@@ -216,9 +212,8 @@ begin
     begin
       CheckType:= ctNone;
       MinWidth:= 50;
-      MaxWidth:= 100;
       CaptionAlignment:= taCenter;
-      Text:= 'Код МКБ';
+      Caption:= 'Код МКБ';
     end;
 
     Header.Columns.Add;
@@ -229,15 +224,11 @@ begin
       CheckType:= ctNone;
       MinWidth:= 200;
       CaptionAlignment:= taLeftJustify;
-      Text:= 'Название МКБ';
+      Caption:= 'Название МКБ';
     end;
-  end;
 
-  for i := 0 to Pred(VST.Header.Columns.Count) do
-    VST.Header.Columns.Items[i].Options:= VST.Header.Columns.Items[i].Options
-                      + [coAllowClick, coEnabled, coParentBidiMode,
-                        coParentColor, coResizable, coShowDropMark,
-                        coVisible, coAllowFocus];
+
+  end;
 end;
 
 procedure TForm1.FormShow(Sender: TObject);

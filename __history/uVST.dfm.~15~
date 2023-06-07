@@ -3,7 +3,7 @@ object Form1: TForm1
   Top = 0
   Caption = 'Form1'
   ClientHeight = 405
-  ClientWidth = 628
+  ClientWidth = 954
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,13 +13,13 @@ object Form1: TForm1
   OnCreate = FormCreate
   OnShow = FormShow
   DesignSize = (
-    628
+    954
     405)
   TextHeight = 15
   object VST: TVirtualStringTree
     Left = 8
     Top = 8
-    Width = 612
+    Width = 938
     Height = 329
     AccessibleName = 'www'
     Anchors = [akLeft, akTop, akRight]
@@ -30,6 +30,7 @@ object Form1: TForm1
     OnGetNodeDataSize = VSTGetNodeDataSize
     Touch.InteractiveGestures = [igPan, igPressAndTap]
     Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
+    ExplicitWidth = 612
     Columns = <
       item
         Position = 0

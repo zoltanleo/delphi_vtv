@@ -192,7 +192,7 @@ begin
     begin
       CheckType:= ctNone;
       MinWidth:= 50;
-      MaxWidth:= 100;
+      MaxWidth:= 50;
       CaptionAlignment:= taCenter;
       Text:= 'ID';
     end;
@@ -204,7 +204,7 @@ begin
     begin
       CheckType:= ctNone;
       MinWidth:= 50;
-      MaxWidth:= 100;
+      MaxWidth:= 50;
       CaptionAlignment:= taCenter;
       Text:= 'Parent ID';
     end;

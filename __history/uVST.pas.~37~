@@ -132,7 +132,7 @@ begin
   VST.BeginUpdate;
   try
     VST.Clear;
-    mds.Filter:= 'TREE_ID = 0';
+    mds.Filter:= 'where TREE_ID = 0';
     mds.Filtered:= True;
 
     mds.First;
@@ -178,10 +178,8 @@ begin
                                   toAutoTristateTracking, toAutoDeleteMovedNodes,
                                   toAutoChangeScale];
 
-
-    Header.AutoSizeIndex:= 2;
     Header.Options:= Header.Options
-                      + [hoAutoResize, hoColumnResize, {hoOwnerDraw,} hoShowHint, hoShowSortGlyphs, hoVisible]
+                      + [hoAutoResize, hoColumnResize, hoOwnerDraw, hoShowHint, hoShowSortGlyphs, hoVisible]
                       - [hoDrag];
     Header.Columns.Clear;
 
@@ -191,10 +189,9 @@ begin
     with Header.Columns.Items[i] do
     begin
       CheckType:= ctNone;
-      MinWidth:= 50;
-      MaxWidth:= 100;
+      MinWidth:= 20;
       CaptionAlignment:= taCenter;
-      Text:= 'ID';
+      Caption:= 'Parent ID';
     end;
 
     Header.Columns.Add;
@@ -203,10 +200,9 @@ begin
     with Header.Columns.Items[i] do
     begin
       CheckType:= ctNone;
-      MinWidth:= 50;
-      MaxWidth:= 100;
+      MinWidth:= 20;
       CaptionAlignment:= taCenter;
-      Text:= 'Parent ID';
+      Caption:= 'ID';
     end;
 
     Header.Columns.Add;
@@ -215,10 +211,9 @@ begin
     with Header.Columns.Items[i] do
     begin
       CheckType:= ctNone;
-      MinWidth:= 50;
-      MaxWidth:= 100;
+      MinWidth:= 20;
       CaptionAlignment:= taCenter;
-      Text:= 'Код МКБ';
+      Caption:= 'Код МКБ';
     end;
 
     Header.Columns.Add;
@@ -229,15 +224,11 @@ begin
       CheckType:= ctNone;
       MinWidth:= 200;
       CaptionAlignment:= taLeftJustify;
-      Text:= 'Название МКБ';
+      Caption:= 'Название МКБ';
     end;
-  end;
 
-  for i := 0 to Pred(VST.Header.Columns.Count) do
-    VST.Header.Columns.Items[i].Options:= VST.Header.Columns.Items[i].Options
-                      + [coAllowClick, coEnabled, coParentBidiMode,
-                        coParentColor, coResizable, coShowDropMark,
-                        coVisible, coAllowFocus];
+
+  end;
 end;
 
 procedure TForm1.FormShow(Sender: TObject);
