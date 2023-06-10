@@ -2,8 +2,8 @@ object Form1: TForm1
   Left = 0
   Top = 0
   Caption = 'Form1'
-  ClientHeight = 405
-  ClientWidth = 628
+  ClientHeight = 374
+  ClientWidth = 816
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,18 +11,19 @@ object Form1: TForm1
   Font.Name = 'Segoe UI'
   Font.Style = []
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnShow = FormShow
   DesignSize = (
-    628
-    405)
+    816
+    374)
   TextHeight = 15
   object VST: TVirtualStringTree
     Left = 8
     Top = 8
-    Width = 612
-    Height = 329
+    Width = 800
+    Height = 321
     AccessibleName = 'www'
-    Anchors = [akLeft, akTop, akRight]
+    Anchors = [akLeft, akTop, akRight, akBottom]
     Header.AutoSizeIndex = 0
     TabOrder = 0
     OnFreeNode = VSTFreeNode
@@ -37,9 +38,9 @@ object Form1: TForm1
         Width = 608
       end>
   end
-  object mds: TMemTableEh
+  object mds_m: TMemTableEh
     Params = <>
-    Left = 360
+    Left = 200
     Top = 48
   end
   object ActList: TActionList
@@ -49,9 +50,23 @@ object Form1: TForm1
       Caption = 'ActFillMDS'
       OnExecute = ActFillMDSExecute
     end
-    object ActFillTree: TAction
-      Caption = 'ActFillTree'
-      OnExecute = ActFillTreeExecute
+    object ActFillTreeByMDS: TAction
+      Caption = 'ActFillTreeByMDS'
+      OnExecute = ActFillTreeByMDSExecute
     end
+    object ActFillTreeByArray: TAction
+      Caption = 'ActFillTreeByArray'
+      OnExecute = ActFillTreeByArrayExecute
+    end
+    object ActFillArray: TAction
+      Caption = 'ActFillArray'
+      OnExecute = ActFillArrayExecute
+    end
+  end
+  object mds_d: TMemTableEh
+    ExternalMemData = mds_m
+    Params = <>
+    Left = 384
+    Top = 48
   end
 end

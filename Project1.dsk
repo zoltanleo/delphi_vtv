@@ -1,37 +1,32 @@
 ﻿[Closed Files]
-File_0=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\source\data\Data.DB.pas',0,1,3213,1,3234,0,0,,
-File_1=TSourceModule,'C:\Embarcadero\comp\VTV\Source\VirtualTrees.pas',0,1,1416,19,1254,0,0,,
-File_2=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\SOURCE\RTL\SYS\System.SysUtils.pas',0,1,1,1,16,0,0,,
-File_3=TSourceModule,'C:\Embarcadero\comp\VTV\Demos\Advanced\WindowsXPStyleDemo.pas',0,1,1,1,1,0,0,,
-File_4=TSourceModule,'C:\Embarcadero\comp\VTV\Demos\Advanced\VisibilityDemo.pas',0,1,1,1,1,0,0,,
-File_5=TSourceModule,'C:\Embarcadero\comp\VTV\Demos\Advanced\States.pas',0,1,1,1,1,0,0,,
-File_6=TSourceModule,'C:\Embarcadero\comp\VTV\Demos\Advanced\SpeedDemo.pas',0,1,1,1,1,0,0,,
-File_7=TSourceModule,'C:\Embarcadero\comp\VTV\Demos\Advanced\PropertiesDemo.pas',0,1,1,1,1,0,0,,
-File_8=TSourceModule,'C:\Embarcadero\comp\VTV\Demos\Advanced\MultilineDemo.pas',0,1,1,1,1,0,0,,
-File_9=TSourceModule,'C:\Embarcadero\comp\VTV\Demos\Advanced\Main.pas',0,1,1,1,1,0,0,,
-File_10=TSourceModule,'C:\Embarcadero\comp\VTV\Demos\Advanced\HeaderCustomDrawDemo.pas',0,1,1,1,1,0,0,,
-File_11=TSourceModule,'C:\Embarcadero\comp\VTV\Demos\Advanced\GridDemo.pas',0,1,1,1,1,0,0,,
-File_12=TSourceModule,'C:\Embarcadero\comp\VTV\Demos\Advanced\GeneralAbilitiesDemo.pas',0,1,1,1,1,0,0,,
-File_13=TSourceModule,'C:\Embarcadero\comp\VTV\Demos\Advanced\Editors.pas',0,1,1,1,1,0,0,,
-File_14=TSourceModule,'C:\Embarcadero\comp\VTV\Demos\Advanced\DrawTreeDemo.pas',0,1,1,1,1,0,0,,
+File_0=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\source\rtl\common\System.Generics.Defaults.pas',0,1,145,1,10,0,0,,
+File_1=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\source\data\Data.DB.pas',0,1,13269,1,13285,0,0,,
+File_2=TSourceModule,'C:\proj\test_delphi\delphi_mkb10\Unit1.pas',0,1,142,5,147,0,0,{{111,2}
+File_3=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\source\rtl\common\System.Generics.Collections.pas',0,1,22,25,33,0,0,,
+File_4=TSourceModule,'C:\Embarcadero\comp\VTV\Source\VirtualTrees.pas',0,1,1416,19,1254,0,0,,
+File_5=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\SOURCE\RTL\SYS\System.SysUtils.pas',0,1,1,1,16,0,0,,
+File_6=TSourceModule,'C:\Embarcadero\comp\VTV\Demos\Advanced\WindowsXPStyleDemo.pas',0,1,1,1,1,0,0,,
+File_7=TSourceModule,'C:\Embarcadero\comp\VTV\Demos\Advanced\VisibilityDemo.pas',0,1,1,1,1,0,0,,
+File_8=TSourceModule,'C:\Embarcadero\comp\VTV\Demos\Advanced\States.pas',0,1,1,1,1,0,0,,
+File_9=TSourceModule,'C:\Embarcadero\comp\VTV\Demos\Advanced\SpeedDemo.pas',0,1,1,1,1,0,0,,
+File_10=TSourceModule,'C:\Embarcadero\comp\VTV\Demos\Advanced\PropertiesDemo.pas',0,1,1,1,1,0,0,,
+File_11=TSourceModule,'C:\Embarcadero\comp\VTV\Demos\Advanced\MultilineDemo.pas',0,1,1,1,1,0,0,,
+File_12=TSourceModule,'C:\Embarcadero\comp\VTV\Demos\Advanced\Main.pas',0,1,1,1,1,0,0,,
+File_13=TSourceModule,'C:\Embarcadero\comp\VTV\Demos\Advanced\HeaderCustomDrawDemo.pas',0,1,1,1,1,0,0,,
+File_14=TSourceModule,'C:\Embarcadero\comp\VTV\Demos\Advanced\GridDemo.pas',0,1,1,1,1,0,0,,
 
 [Modules]
 Module0=C:\proj\test_delphi\delphi_vtv\uVST.pas
-Module1=C:\proj\test_delphi\delphi_mkb10\Unit1.pas
-Count=2
+Count=1
 EditWindowCount=1
 
 [C:\proj\test_delphi\delphi_vtv\uVST.pas]
 ModuleType=TSourceModule
 
-[C:\proj\test_delphi\delphi_mkb10\Unit1.pas]
-ModuleType=TSourceModule
-
 [EditWindow0]
-ViewCount=2
+ViewCount=1
 CurrentEditView=C:\proj\test_delphi\delphi_vtv\uVST.pas
 View0=0
-View1=1
 PercentageSizes=1
 Create=1
 Visible=1
@@ -64,30 +59,25 @@ TabDockRightClients=DockSite2=0,DockSite4=1
 [View0]
 CustomEditViewType=TEditView
 Module=C:\proj\test_delphi\delphi_vtv\uVST.pas
-CursorX=66
-CursorY=147
-TopLine=111
+CursorX=51
+CursorY=401
+TopLine=123
 LeftCol=1
-Elisions=
-Bookmarks=
+Elisions={{128,52},{182,3},{''}}{{184,58},{281,3},{''}}{{283,45},{382,3},{''}}{{384,46},{387,3},{''}}
+Bookmarks={1,126,1}
 EditViewName=C:\proj\test_delphi\delphi_vtv\uVST.pas
 
-[View1]
-CustomEditViewType=TEditView
-Module=C:\proj\test_delphi\delphi_mkb10\Unit1.pas
-CursorX=5
-CursorY=147
-TopLine=142
-LeftCol=1
-Elisions={{111,2},{128,13},{'skiped code'}}
-Bookmarks=
-EditViewName=Borland.FormDesignerView
-
 [Watches]
-Count=0
+Count=6
+Watch0='IntArr',256,0,18,1,0,'Watches',1
+Watch1='IntArr[i]',256,0,18,1,0,'Watches',1
+Watch2='Data.ID',256,0,18,1,0,'Watches',1
+Watch3='Data.Mkb_caption',256,0,18,1,0,'Watches',1
+Watch4='Data.Mkb_code',256,0,18,1,0,'Watches',1
+Watch5='mds_d.RecordCount',256,0,18,1,0,'Watches',1
 
 [WatchWindow]
-WatchColumnWidth=120
+WatchColumnWidth=252
 WatchShowColumnHeaders=1
 PercentageSizes=1
 Create=1
@@ -255,8 +245,8 @@ SplitPos=140
 
 [PropInspDesignerSelection]
 ArrangeBy=Name
-SelectedItem=Anchors.akRight,
-ExpandedItems=StyleElements=0,Touch=0,Constraints=0,CustomTitleBar=0,Font=0,GlassFrame=0,HorzScrollBar=0,Header=1,LiveBindings=0,"LiveBindings Designer=0",Margins=0,Font.Style=0,Header.FixedAreaConstraints=1,Header.Font=0,Header.Options=1,Options=1,Anchors=1,BevelEdges=0,ClipboardFormats=0,Colors=0,DragOperations=0,BorderIcons=0
+SelectedItem=Action,OnExecute
+ExpandedItems=StyleElements=0,Touch=0,Anchors=0,BorderIcons=0,Constraints=0,CustomTitleBar=0,LiveBindings=0
 
 [DebugLogView]
 PercentageSizes=1
@@ -659,8 +649,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=1502
-Top=125
+Left=8
+Top=8
 Width=2000
 Height=9010
 MaxLeft=-1

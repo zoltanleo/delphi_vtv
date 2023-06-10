@@ -19,6 +19,15 @@ uses
   , VirtualTrees
   , System.Actions
   , Vcl.ActnList
+  , System.Generics.Collections
+  , DBGridEhGrouping
+  , ToolCtrlsEh
+  , DBGridEhToolCtrls
+  , DynVarsEh
+  , EhLibVCL
+  , GridsEh
+  , DBAxisGridsEh
+  , DBGridEh
   ;
 
 type
@@ -34,10 +43,13 @@ type
 
   TForm1 = class(TForm)
     VST: TVirtualStringTree;
-    mds: TMemTableEh;
+    mds_m: TMemTableEh;
     ActList: TActionList;
     ActFillMDS: TAction;
-    ActFillTree: TAction;
+    ActFillTreeByMDS: TAction;
+    ActFillTreeByArray: TAction;
+    mds_d: TMemTableEh;
+    ActFillArray: TAction;
     procedure ActFillMDSExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -45,23 +57,75 @@ type
     procedure VSTGetNodeDataSize(Sender: TBaseVirtualTree; var NodeDataSize: Integer);
     procedure VSTGetText(Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex; TextType: TVSTTextType;
       var CellText: string);
-    procedure ActFillTreeExecute(Sender: TObject);
+    procedure ActFillTreeByMDSExecute(Sender: TObject);
+    procedure ActFillArrayExecute(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure ActFillTreeByArrayExecute(Sender: TObject);
   private
+    FValuesList: TList<TTreeData>;
     { Private declarations }
   public
     { Public declarations }
+    property ValuesList: TList<TTreeData> read FValuesList;
   end;
 
 const
-  DataFile = 'c:\proj\test_delphi\delphi_vtv\base\mkb10.sql';
+  DataFile = 'c:\proj\test_delphi\delphi_vtv\base\mkb10.txt';
   ExcludeStr1 = 'INSERT INTO';
-  ExcludeStr2 = 'REINSERT (';
+  ExcludeStr2 = 'REINSERT';
+  a = '(''';
+  b = ' ';
+  c = ''', ';
+  d = ', ';
+  e = ');';
 var
   Form1: TForm1;
 
 implementation
 
 {$R *.dfm}
+
+procedure TForm1.ActFillArrayExecute(Sender: TObject);
+var
+  SL: TStringList;
+  i: Integer;
+  s, ss: string;
+  k,m: Integer;
+  MyRec: TTreeData;
+begin
+  SL:= TStringList.Create;
+  try
+    SL.LoadFromFile(DataFile,TEncoding.UTF8);
+
+    for i := 0 to Pred(SL.Count) do
+    begin
+      if (Pos(ExcludeStr1,SL.Strings[i]) = 0) then
+        if (Pos(ExcludeStr2,SL.Strings[i]) = 0) then Continue;
+
+      k:= PosEx(a,SL.Strings[i]) + System.Length(a);
+      m:= PosEx(b,SL.Strings[i],k);
+      MyRec.Mkb_code := Copy(SL.Strings[i],k,m-k);
+
+      k:= m + System.Length(b);
+      m:= PosEx(c,SL.Strings[i],k);
+      MyRec.Mkb_caption:= Copy(SL.Strings[i],k,m-k);
+
+      k:= m + System.Length(c);
+      m:= PosEx(d,SL.Strings[i],k);
+      MyRec.ParentID:= StrToInt(Copy(SL.Strings[i],k,m-k));
+
+      k:= m + System.Length(d);
+      m:= PosEx(e,SL.Strings[i],k);
+      MyRec.ID:= StrToInt(Copy(SL.Strings[i],k,m-k));
+
+      FValuesList.Add(MyRec);
+    end;
+
+    FValuesList.TrimExcess;
+  finally
+    SL.Free;
+  end;
+end;
 
 procedure TForm1.ActFillMDSExecute(Sender: TObject);
 const
@@ -80,73 +144,185 @@ begin
   try
     SL.LoadFromFile(DataFile,TEncoding.UTF8);
 
-    if mds.Active
-      then mds.EmptyTable
-      else mds.Active:= True;
+    if mds_m.Active
+      then mds_m.EmptyTable
+      else mds_m.Active:= True;
+
+    mds_m.DisableControls;
 
     for i := 0 to Pred(SL.Count) do
     begin
       if (Pos(ExcludeStr1,SL.Strings[i]) = 0) then
         if (Pos(ExcludeStr2,SL.Strings[i]) = 0) then Continue;
 
-      mds.Append;
+      mds_m.Append;
 
       k:= PosEx(a,SL.Strings[i]) + System.Length(a);
       m:= PosEx(b,SL.Strings[i],k);
-      mds.FieldByName('MKB_CODE').AsString:= Copy(SL.Strings[i],k,m-k);
+      mds_m.FieldByName('MKB_CODE').AsString:= Copy(SL.Strings[i],k,m-k);
 
       k:= m + System.Length(b);
       m:= PosEx(c,SL.Strings[i],k);
-      mds.FieldByName('MKB_CAPTION').AsString:= Copy(SL.Strings[i],k,m-k);
+      mds_m.FieldByName('MKB_CAPTION').AsString:= Copy(SL.Strings[i],k,m-k);
 
       k:= m + System.Length(c);
       m:= PosEx(d,SL.Strings[i],k);
-      mds.FieldByName('TREE_ID').AsString:= Copy(SL.Strings[i],k,m-k);
+      mds_m.FieldByName('TREE_ID').AsString:= Copy(SL.Strings[i],k,m-k);
 
       k:= m + System.Length(d);
       m:= PosEx(e,SL.Strings[i],k);
-      mds.FieldByName('VALUES_UID').AsString:= Copy(SL.Strings[i],k,m-k);
+      mds_m.FieldByName('VALUES_UID').AsString:= Copy(SL.Strings[i],k,m-k);
     end;
 
-//    if not mds.IsEmpty then mds.Post;
-    if not (mds.State in [dsBrowse]) then mds.Post;
+//    if not mds_m.IsEmpty then mds_m.Post;
+    if not (mds_m.State in [dsBrowse]) then mds_m.Post;
 
   finally
+    mds_m.EnableControls;
     FreeAndNil(SL);
   end;
 end;
 
-procedure TForm1.ActFillTreeExecute(Sender: TObject);
-var
-  rNode: PVirtualNode;
-  chNode: PVirtualNode;
-  Data: PTreeData;
-  id, parent_id: Integer;
-begin
-  rNode:= nil;
-  chNode:= nil;
-  Data:= nil;
-  id:= -1;
-  parent_id:= -1;
+procedure TForm1.ActFillTreeByArrayExecute(Sender: TObject);
+  procedure AddNodes(ANode: PVirtualNode; aID: Integer);
+  var
+    Node: PVirtualNode;
+    Data: PTreeData;
+    i: Integer;
+    tmpList: TList<TTreeData>;
+    tmpRec: TTreeData;
+  begin
+    //иницилизируем переменные
+    Data:= nil;
+    Node:= nil;
 
+    tmpList:= TList<TTreeData>.Create;
+    try
+      tmpList.Clear;
+      for i := 0 to Pred(ValuesList.Count) do
+        if ((ValuesList[i].ParentID = aID) and (ValuesList[i].ID <> 0)) then tmpList.Add(ValuesList[i]);
+
+      tmpList.TrimExcess;
+
+      if (tmpList.Count = 0) then Exit;
+
+      for i := 0 to Pred(tmpList.Count) do
+      begin
+        Node:= VST.AddChild(ANode);
+        Data:= VST.GetNodeData(Node);
+        Data^.ID:= tmpList[i].ID;
+        Data^.ParentID:= tmpList[i].ParentID;
+        Data^.Mkb_code:= tmpList[i].Mkb_code;
+        Data^.Mkb_caption:= tmpList[i].Mkb_caption;
+
+        AddNodes(Node,tmpList[i].ID);
+      end;
+    finally
+      tmpList.Free;
+    end;
+  end;
+begin
+
+  try
+    VST.BeginUpdate;
+    AddNodes(nil,0);
+  finally
+    VST.EndUpdate;
+  end;
+end;
+
+procedure TForm1.ActFillTreeByMDSExecute(Sender: TObject);
+var
+  IntArr: array of Integer;
+  I: Integer;
+  Node: PVirtualNode;
+  Data: PTreeData;
+  DataRec: TTreeData;
+
+  procedure AddNodes(aID: Integer; ANode: PVirtualNode);
+  var
+    Node: PVirtualNode;
+    Data: PTreeData;
+    DataRec: TTreeData;
+    IntArr: array of Integer;
+    i: Integer;
+  begin
+    mds_d.Filtered:= False;
+    mds_d.Filter:= 'TREE_ID=' + IntToStr(aID);
+    mds_d.Filtered:= True;
+
+    if (mds_d.RecordCount = 0) then Exit;
+    SetLength(IntArr,mds_d.RecordCount);
+
+    i:= 0;
+    while not mds_d.Eof do
+    begin
+      IntArr[i]:= mds_d.FieldByName('VALUES_UID').AsInteger;
+      Inc(i);
+      mds_d.Next;
+    end;
+
+    for i := Low(IntArr) to High(IntArr) do
+    begin
+      if (i > 2) then Break;
+      mds_m.First;
+      if not mds_m.Locate('VALUES_UID',IntArr[i],[]) then Continue;
+
+
+      Node:= VST.AddChild(ANode);
+      Data:= VST.GetNodeData(Node);
+      Data.ID:= mds_m.FieldByName('VALUES_UID').AsInteger;
+      Data.ParentID:= mds_m.FieldByName('TREE_ID').AsInteger;
+      Data.Mkb_code:= mds_m.FieldByName('MKB_CODE').AsString;
+      Data.Mkb_caption:= mds_m.FieldByName('MKB_CAPTION').AsString;
+
+      mds_d.Filtered:= False;
+      mds_d.Filter:= 'TREE_ID=' + IntToStr(Data.ID);
+      mds_d.Filtered:= True;
+
+      if (mds_d.RecordCount > 0) then AddNodes(Data.ID, Node);
+    end;
+  end;
+begin
+  Exit;
   VST.BeginUpdate;
   try
     VST.Clear;
-    mds.Filter:= 'TREE_ID = 0';
-    mds.Filtered:= True;
 
-    mds.First;
+    mds_d.Filtered:= False;
+    mds_d.Filter:= 'TREE_ID=0';
+    mds_d.Filtered:= True;
 
-    while not mds.Eof do
+    if (mds_d.RecordCount = 0) then Exit;
+    SetLength(IntArr,mds_d.RecordCount);
+
+    i:= 0;
+    mds_d.First;
+    while not mds_d.Eof do
     begin
-      rNode:= VST.AddChild(nil);
-      Data:= VST.GetNodeData(rNode);
-      Data.ID:= mds.FieldByName('VALUES_UID').AsInteger;
-      Data.ParentID:= mds.FieldByName('TREE_ID').AsInteger;
-      Data.Mkb_code:= mds.FieldByName('MKB_CODE').AsString;
-      Data.Mkb_caption:= mds.FieldByName('MKB_CAPTION').AsString;
+      IntArr[i]:= mds_d.FieldByName('VALUES_UID').AsInteger;
+      Inc(i);
+      mds_d.Next;
+    end;
 
-      mds.Next;
+    for I := Low(IntArr) to High(IntArr) do
+    begin
+//      if (i>0) then Break;
+      
+      mds_m.First;
+      if not mds_m.Locate('VALUES_UID',IntArr[i],[]) then Continue;
+      Node:= VST.AddChild(nil);
+      Data:= VST.GetNodeData(Node);
+      Data.ID:= mds_m.FieldByName('VALUES_UID').AsInteger;
+      Data.ParentID:= mds_m.FieldByName('TREE_ID').AsInteger;
+      Data.Mkb_code:= mds_m.FieldByName('MKB_CODE').AsString;
+      Data.Mkb_caption:= mds_m.FieldByName('MKB_CAPTION').AsString;
+
+      mds_d.Filtered:= False;
+      mds_d.Filter:= 'TREE_ID=' + IntToStr(Data.ID);
+      mds_d.Filtered:= True;
+
+      if (mds_d.RecordCount > 0) then AddNodes(Data.ID, Node);
     end;
 
   finally
@@ -158,7 +334,22 @@ procedure TForm1.FormCreate(Sender: TObject);
 var
   i: Integer;
 begin
-  with mds do
+  FValuesList:= TList<TTreeData>.Create;
+  FValuesList.Clear;
+
+  with mds_m do
+  begin
+    FieldDefs.Add('MKB_CODE', ftString, 10);
+    FieldDefs.Add('MKB_CAPTION', ftString, 260);
+    FieldDefs.Add('TREE_ID', ftInteger);
+    FieldDefs.Add('VALUES_UID', ftInteger);
+
+    CreateDataSet;
+    Filtered := False;
+    Active := False;
+  end;
+
+  with mds_d do
   begin
     FieldDefs.Add('MKB_CODE', ftString, 10);
     FieldDefs.Add('MKB_CAPTION', ftString, 260);
@@ -188,11 +379,11 @@ begin
     Header.Columns.Add;
     i:= 0;
 
-    with Header.Columns.Items[i] do
+    with Header.Columns.Items[0] do
     begin
       CheckType:= ctNone;
       MinWidth:= 50;
-      MaxWidth:= 100;
+      Width:= 200;
       CaptionAlignment:= taCenter;
       Text:= 'ID';
     end;
@@ -200,7 +391,7 @@ begin
     Header.Columns.Add;
     Inc(i);
 
-    with Header.Columns.Items[i] do
+    with Header.Columns.Items[1] do
     begin
       CheckType:= ctNone;
       MinWidth:= 50;
@@ -212,7 +403,7 @@ begin
     Header.Columns.Add;
     Inc(i);
 
-    with Header.Columns.Items[i] do
+    with Header.Columns.Items[2] do
     begin
       CheckType:= ctNone;
       MinWidth:= 50;
@@ -224,7 +415,7 @@ begin
     Header.Columns.Add;
     Inc(i);
 
-    with Header.Columns.Items[i] do
+    with Header.Columns.Items[3] do
     begin
       CheckType:= ctNone;
       MinWidth:= 200;
@@ -240,10 +431,25 @@ begin
                         coVisible, coAllowFocus];
 end;
 
-procedure TForm1.FormShow(Sender: TObject);
+procedure TForm1.FormDestroy(Sender: TObject);
 begin
-  ActFillMDSExecute(Sender);
-  ActFillTreeExecute(Sender);
+  FValuesList.Free;
+end;
+
+procedure TForm1.FormShow(Sender: TObject);
+var
+  a,b: Cardinal;
+begin
+
+//  ActFillMDSExecute(Sender);
+//  mds_d.Active:= True;
+//  ActFillTreeByMDSExecute(Sender);
+
+  ActFillArrayExecute(Sender);
+  a:= GetTickCount;
+  ActFillTreeByArrayExecute(Sender);
+  b:= GetTickCount;
+  Caption:= Format('Execute time: %d msec',[b-a]);
 end;
 
 procedure TForm1.VSTFreeNode(Sender: TBaseVirtualTree; Node: PVirtualNode);
