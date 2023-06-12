@@ -47,9 +47,9 @@ type
     ActList: TActionList;
     ActFillMDS: TAction;
     ActFillTreeByMDS: TAction;
-    ActFillTreeByArray: TAction;
+    ActFillTreeByArrayG: TAction;
     mds_d: TMemTableEh;
-    ActFillArray: TAction;
+    ActFillArrayG: TAction;
     procedure ActFillMDSExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -58,9 +58,9 @@ type
     procedure VSTGetText(Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex; TextType: TVSTTextType;
       var CellText: string);
     procedure ActFillTreeByMDSExecute(Sender: TObject);
-    procedure ActFillArrayExecute(Sender: TObject);
+    procedure ActFillArrayGExecute(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure ActFillTreeByArrayExecute(Sender: TObject);
+    procedure ActFillTreeByArrayGExecute(Sender: TObject);
   private
     FValuesList: TList<TTreeData>;
     { Private declarations }
@@ -85,7 +85,7 @@ implementation
 
 {$R *.dfm}
 
-procedure TForm1.ActFillArrayExecute(Sender: TObject);
+procedure TForm1.ActFillArrayGExecute(Sender: TObject);
 var
   SL: TStringList;
   i: Integer;
@@ -183,7 +183,7 @@ begin
   end;
 end;
 
-procedure TForm1.ActFillTreeByArrayExecute(Sender: TObject);
+procedure TForm1.ActFillTreeByArrayGExecute(Sender: TObject);
   procedure AddNodes(ANode: PVirtualNode; aID: Integer);
   var
     Node: PVirtualNode;
@@ -222,7 +222,6 @@ procedure TForm1.ActFillTreeByArrayExecute(Sender: TObject);
     end;
   end;
 begin
-
   try
     VST.BeginUpdate;
     AddNodes(nil,0);
@@ -438,18 +437,19 @@ end;
 
 procedure TForm1.FormShow(Sender: TObject);
 var
-  a,b: Cardinal;
+  a,b,c: Cardinal;
 begin
 
 //  ActFillMDSExecute(Sender);
 //  mds_d.Active:= True;
 //  ActFillTreeByMDSExecute(Sender);
 
-  ActFillArrayExecute(Sender);
   a:= GetTickCount;
-  ActFillTreeByArrayExecute(Sender);
+  ActFillArrayGExecute(Sender);
   b:= GetTickCount;
-  Caption:= Format('Execute time: %d msec',[b-a]);
+  ActFillTreeByArrayGExecute(Sender);
+  c:= GetTickCount;
+  Caption:= Format('Get data time: %d msec| Build Tree: %d',[b-a, c-b]);
 end;
 
 procedure TForm1.VSTFreeNode(Sender: TBaseVirtualTree; Node: PVirtualNode);

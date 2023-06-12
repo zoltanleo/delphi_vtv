@@ -54,13 +54,13 @@ object Form1: TForm1
       Caption = 'ActFillTreeByMDS'
       OnExecute = ActFillTreeByMDSExecute
     end
-    object ActFillTreeByArray: TAction
-      Caption = 'ActFillTreeByArray'
-      OnExecute = ActFillTreeByArrayExecute
+    object ActFillTreeByArrayG: TAction
+      Caption = 'ActFillTreeByArrayG'
+      OnExecute = ActFillTreeByArrayGExecute
     end
-    object ActFillArray: TAction
-      Caption = 'ActFillArray'
-      OnExecute = ActFillArrayExecute
+    object ActFillArrayG: TAction
+      Caption = 'ActFillArrayG'
+      OnExecute = ActFillArrayGExecute
     end
   end
   object mds_d: TMemTableEh
