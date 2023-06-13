@@ -27,7 +27,7 @@ uses
   , EhLibVCL
   , GridsEh
   , DBAxisGridsEh
-  , DBGridEh
+  , DBGridEh, Vcl.StdCtrls
   ;
 
 type
@@ -54,6 +54,7 @@ type
     ActFillArrayG: TAction;
     ActFillArray: TAction;
     ActFillTreeByArray: TAction;
+    Label1: TLabel;
     procedure ActFillMDSExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -67,6 +68,7 @@ type
     procedure ActFillTreeByArrayGExecute(Sender: TObject);
     procedure ActFillArrayExecute(Sender: TObject);
     procedure ActFillTreeByArrayExecute(Sender: TObject);
+    procedure VSTAddToSelection(Sender: TBaseVirtualTree; Node: PVirtualNode);
   private
     FValuesList: TList<TTreeData>;
     FDataArr: TDataArr;
@@ -455,75 +457,75 @@ begin
     Active := False;
   end;
 
-  with VST do
-  begin
-    TreeOptions.AutoOptions:= TreeOptions.AutoOptions
-                              + [toAutoDropExpand, toAutoExpand,
-                                  toAutoScrollOnExpand, toAutoSort,
-                                  toAutoTristateTracking, toAutoDeleteMovedNodes,
-                                  toAutoChangeScale];
+//  with VST do
+//  begin
+//    TreeOptions.AutoOptions:= TreeOptions.AutoOptions
+//                              + [toAutoDropExpand, toAutoExpand,
+//                                  toAutoScrollOnExpand, toAutoSort,
+//                                  toAutoTristateTracking, toAutoDeleteMovedNodes,
+//                                  toAutoChangeScale];
 
 
-    Header.AutoSizeIndex:= 0;
-    Header.Options:= Header.Options
-                      + [hoAutoResize, hoColumnResize, hoOwnerDraw, hoShowHint, hoShowSortGlyphs, hoVisible]
-                      - [hoDrag];
-    Header.Columns.Clear;
-
-    Header.Columns.Add;
-    Header.MainColumn:= 0;
-    i:= 0;
-
-    with Header.Columns.Items[0] do
-    begin
-      CheckType:= ctNone;
-      MinWidth:= 50;
-      Width:= 200;
-      CaptionAlignment:= taCenter;
-      Text:= 'ID';
-    end;
-
-    Header.Columns.Add;
-    Inc(i);
-
-    with Header.Columns.Items[1] do
-    begin
-      CheckType:= ctNone;
-      MinWidth:= 50;
-      MaxWidth:= 100;
-      CaptionAlignment:= taCenter;
-      Text:= 'Parent ID';
-    end;
-
-    Header.Columns.Add;
-    Inc(i);
-
-    with Header.Columns.Items[2] do
-    begin
-      CheckType:= ctNone;
-      MinWidth:= 50;
-      MaxWidth:= 100;
-      CaptionAlignment:= taCenter;
-      Text:= 'Код МКБ';
-    end;
-
-    Header.Columns.Add;
-    Inc(i);
-
-    with Header.Columns.Items[3] do
-    begin
-      CheckType:= ctNone;
-      MinWidth:= 200;
-      CaptionAlignment:= taLeftJustify;
-      Text:= 'Название МКБ';
-    end;
-  end;
-
-  for i := 0 to Pred(VST.Header.Columns.Count) do
-    VST.Header.Columns.Items[i].Options:= VST.Header.Columns.Items[i].Options
-                      + [coAllowClick, coEnabled, coParentBidiMode,
-                        coParentColor, coResizable, coShowDropMark,
-                        coVisible, coAllowFocus];
+//    Header.AutoSizeIndex:= 0;
+//    Header.Options:= Header.Options
+//                      + [hoAutoResize, hoColumnResize, hoOwnerDraw, hoShowHint, hoShowSortGlyphs, hoVisible]
+//                      - [hoDrag];
+//    Header.Columns.Clear;
+//
+//    Header.Columns.Add;
+//    Header.MainColumn:= 0;
+//    i:= 0;
+//
+//    with Header.Columns.Items[0] do
+//    begin
+//      CheckType:= ctNone;
+//      MinWidth:= 50;
+//      Width:= 200;
+//      CaptionAlignment:= taCenter;
+//      Text:= 'ID';
+//    end;
+//
+//    Header.Columns.Add;
+//    Inc(i);
+//
+//    with Header.Columns.Items[1] do
+//    begin
+//      CheckType:= ctNone;
+//      MinWidth:= 50;
+//      MaxWidth:= 100;
+//      CaptionAlignment:= taCenter;
+//      Text:= 'Parent ID';
+//    end;
+//
+//    Header.Columns.Add;
+//    Inc(i);
+//
+//    with Header.Columns.Items[2] do
+//    begin
+//      CheckType:= ctNone;
+//      MinWidth:= 50;
+//      MaxWidth:= 100;
+//      CaptionAlignment:= taCenter;
+//      Text:= 'Код МКБ';
+//    end;
+//
+//    Header.Columns.Add;
+//    Inc(i);
+//
+//    with Header.Columns.Items[3] do
+//    begin
+//      CheckType:= ctNone;
+//      MinWidth:= 200;
+//      CaptionAlignment:= taLeftJustify;
+//      Text:= 'Название МКБ';
+//    end;
+//  end;
+//
+//  for i := 0 to Pred(VST.Header.Columns.Count) do
+//    VST.Header.Columns.Items[i].Options:= VST.Header.Columns.Items[i].Options
+//                      + [coAllowClick, coEnabled, coParentBidiMode,
+//                        coParentColor, coResizable, coShowDropMark,
+//                        coVisible, coAllowFocus];
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
@@ -548,6 +550,18 @@ begin
   ActFillTreeByArrayExecute(Sender);
   c:= GetTickCount;
   Caption:= Format('Get data time: %d msec| Build Tree: %d',[b-a, c-b]);
+end;
+
+procedure TForm1.VSTAddToSelection(Sender: TBaseVirtualTree; Node: PVirtualNode);
+begin
+  if not (toMultiSelect in VST.TreeOptions.SelectionOptions)
+  then
+    Label1.Caption:= Format('Selected Item:  %s [%s]',[
+           PTreeData(Sender.GetNodeData(Node))^.Mkb_caption,
+           PTreeData(Sender.GetNodeData(Node))^.Mkb_code
+                                      ])
+  else
+    Label1.Caption:= Format('Selected Node Count: %d',[Sender.SelectedCount]);
 end;
 
 procedure TForm1.VSTFreeNode(Sender: TBaseVirtualTree; Node: PVirtualNode);

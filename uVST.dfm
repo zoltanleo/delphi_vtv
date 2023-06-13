@@ -17,15 +17,30 @@ object Form1: TForm1
     816
     374)
   TextHeight = 15
+  object Label1: TLabel
+    Left = 8
+    Top = 312
+    Width = 49
+    Height = 15
+    Caption = 'Label1'
+  end
   object VST: TVirtualStringTree
     Left = 8
     Top = 8
     Width = 800
-    Height = 321
+    Height = 289
     AccessibleName = 'www'
-    Anchors = [akLeft, akTop, akRight, akBottom]
+    Anchors = [akLeft, akTop, akRight]
     Header.AutoSizeIndex = 0
+    Header.DefaultHeight = 25
+    Header.Height = 25
+    Header.Options = [hoColumnResize, hoShowSortGlyphs, hoVisible, hoAutoSpring, hoFullRepaintOnResize, hoDisableAnimatedResize, hoHeaderClickAutoSort, hoAutoResizeInclCaption]
     TabOrder = 0
+    TreeOptions.AutoOptions = [toAutoDropExpand, toAutoScrollOnExpand, toAutoSort, toAutoSpanColumns, toAutoTristateTracking, toAutoDeleteMovedNodes, toAutoChangeScale]
+    TreeOptions.MiscOptions = [toFullRepaintOnResize, toInitOnSave, toToggleOnDblClick, toWheelPanning]
+    TreeOptions.PaintOptions = [toShowButtons, toShowRoot, toShowTreeLines, toThemeAware, toUseBlendedImages]
+    TreeOptions.SelectionOptions = [toFullRowSelect, toCenterScrollIntoView, toAlwaysSelectNode]
+    OnAddToSelection = VSTAddToSelection
     OnFreeNode = VSTFreeNode
     OnGetText = VSTGetText
     OnGetNodeDataSize = VSTGetNodeDataSize
@@ -33,9 +48,26 @@ object Form1: TForm1
     Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
     Columns = <
       item
+        Color = clWindow
+        Options = [coAllowClick, coEnabled, coParentBidiMode, coResizable, coVisible, coAutoSpring, coSmartResize, coAllowFocus, coEditable, coStyleColor]
         Position = 0
-        Text = 'www'
-        Width = 608
+        Text = 'ID'
+        Width = 133
+      end
+      item
+        Position = 1
+        Text = 'Parent ID'
+        Width = 100
+      end
+      item
+        Position = 2
+        Text = #1050#1086#1076' '#1052#1050#1041
+        Width = 100
+      end
+      item
+        Position = 3
+        Text = #1053#1072#1079#1074#1072#1085#1080#1077' '#1052#1050#1041
+        Width = 500
       end>
   end
   object mds_m: TMemTableEh
