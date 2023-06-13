@@ -20,8 +20,9 @@ object Form1: TForm1
   object Label1: TLabel
     Left = 8
     Top = 312
-    Width = 49
+    Width = 34
     Height = 15
+    Anchors = [akLeft, akBottom]
     Caption = 'Label1'
   end
   object VST: TVirtualStringTree
@@ -30,44 +31,65 @@ object Form1: TForm1
     Width = 800
     Height = 289
     AccessibleName = 'www'
-    Anchors = [akLeft, akTop, akRight]
+    Anchors = [akLeft, akTop, akRight, akBottom]
     Header.AutoSizeIndex = 0
     Header.DefaultHeight = 25
+    Header.Font.Charset = DEFAULT_CHARSET
+    Header.Font.Color = clWindowText
+    Header.Font.Height = -12
+    Header.Font.Name = 'Segoe UI'
+    Header.Font.Style = []
     Header.Height = 25
-    Header.Options = [hoColumnResize, hoShowSortGlyphs, hoVisible, hoAutoSpring, hoFullRepaintOnResize, hoDisableAnimatedResize, hoHeaderClickAutoSort, hoAutoResizeInclCaption]
+    Header.Options = [hoAutoResize, hoColumnResize, hoOwnerDraw, hoShowHint, hoShowSortGlyphs, hoVisible, hoAutoSpring, hoFullRepaintOnResize, hoDisableAnimatedResize, hoHeaderClickAutoSort, hoAutoColumnPopupMenu, hoAutoResizeInclCaption]
+    Header.ParentFont = False
+    HintMode = hmTooltip
+    ParentShowHint = False
+    ShowHint = True
+    StyleName = 'Windows'
     TabOrder = 0
-    TreeOptions.AutoOptions = [toAutoDropExpand, toAutoScrollOnExpand, toAutoSort, toAutoSpanColumns, toAutoTristateTracking, toAutoDeleteMovedNodes, toAutoChangeScale]
+    TreeOptions.AutoOptions = [toAutoDropExpand, toAutoScroll, toAutoScrollOnExpand, toAutoSort, toAutoSpanColumns, toAutoTristateTracking, toAutoDeleteMovedNodes, toAutoChangeScale]
     TreeOptions.MiscOptions = [toFullRepaintOnResize, toInitOnSave, toToggleOnDblClick, toWheelPanning]
-    TreeOptions.PaintOptions = [toShowButtons, toShowRoot, toShowTreeLines, toThemeAware, toUseBlendedImages]
-    TreeOptions.SelectionOptions = [toFullRowSelect, toCenterScrollIntoView, toAlwaysSelectNode]
+    TreeOptions.PaintOptions = [toShowButtons, toShowRoot, toShowTreeLines, toThemeAware, toUseBlendedImages, toShowFilteredNodes]
+    TreeOptions.SelectionOptions = [toExtendedFocus, toFullRowSelect, toCenterScrollIntoView, toAlwaysSelectNode]
     OnAddToSelection = VSTAddToSelection
+    OnAdvancedHeaderDraw = VSTAdvancedHeaderDraw
+    OnCompareNodes = VSTCompareNodes
     OnFreeNode = VSTFreeNode
     OnGetText = VSTGetText
     OnGetNodeDataSize = VSTGetNodeDataSize
+    OnHeaderClick = VSTHeaderClick
+    OnHeaderDrawQueryElements = VSTHeaderDrawQueryElements
     Touch.InteractiveGestures = [igPan, igPressAndTap]
     Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
     Columns = <
       item
-        Color = clWindow
-        Options = [coAllowClick, coEnabled, coParentBidiMode, coResizable, coVisible, coAutoSpring, coSmartResize, coAllowFocus, coEditable, coStyleColor]
+        CaptionAlignment = taCenter
+        Options = [coAllowClick, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAutoSpring, coSmartResize, coAllowFocus, coWrapCaption, coUseCaptionAlignment, coEditable, coStyleColor]
         Position = 0
         Text = 'ID'
-        Width = 133
+        Width = 143
       end
       item
+        CaptionAlignment = taCenter
+        Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus, coUseCaptionAlignment, coEditable, coStyleColor]
         Position = 1
         Text = 'Parent ID'
         Width = 100
       end
       item
+        CaptionAlignment = taCenter
+        Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus, coUseCaptionAlignment, coEditable, coStyleColor]
         Position = 2
         Text = #1050#1086#1076' '#1052#1050#1041
         Width = 100
       end
       item
+        CaptionAlignment = taCenter
+        Color = clWindow
+        Options = [coAllowClick, coEnabled, coParentBidiMode, coResizable, coShowDropMark, coVisible, coAutoSpring, coSmartResize, coAllowFocus, coWrapCaption, coUseCaptionAlignment, coEditable]
         Position = 3
         Text = #1053#1072#1079#1074#1072#1085#1080#1077' '#1052#1050#1041
-        Width = 500
+        Width = 453
       end>
   end
   object mds_m: TMemTableEh
@@ -108,5 +130,18 @@ object Form1: TForm1
     Params = <>
     Left = 384
     Top = 48
+  end
+  object VTHeaderPopupMenu1: TVTHeaderPopupMenu
+    Left = 488
+    Top = 128
+    object rewtre1: TMenuItem
+      Action = ActFillTreeByArray
+    end
+    object jjjjjjj1: TMenuItem
+      Action = ActFillArray
+    end
+    object eeeee1: TMenuItem
+      Caption = 'eeeee'
+    end
   end
 end

@@ -27,7 +27,7 @@ uses
   , EhLibVCL
   , GridsEh
   , DBAxisGridsEh
-  , DBGridEh, Vcl.StdCtrls
+  , DBGridEh, Vcl.StdCtrls, Vcl.Menus, VirtualTrees.HeaderPopup
   ;
 
 type
@@ -55,6 +55,10 @@ type
     ActFillArray: TAction;
     ActFillTreeByArray: TAction;
     Label1: TLabel;
+    VTHeaderPopupMenu1: TVTHeaderPopupMenu;
+    rewtre1: TMenuItem;
+    jjjjjjj1: TMenuItem;
+    eeeee1: TMenuItem;
     procedure ActFillMDSExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -69,6 +73,13 @@ type
     procedure ActFillArrayExecute(Sender: TObject);
     procedure ActFillTreeByArrayExecute(Sender: TObject);
     procedure VSTAddToSelection(Sender: TBaseVirtualTree; Node: PVirtualNode);
+    procedure VSTAdvancedHeaderDraw(Sender: TVTHeader; var PaintInfo: THeaderPaintInfo;
+      const Elements: THeaderPaintElements);
+    procedure VSTHeaderDrawQueryElements(Sender: TVTHeader; var PaintInfo: THeaderPaintInfo;
+      var Elements: THeaderPaintElements);
+    procedure VSTHeaderClick(Sender: TVTHeader; HitInfo: TVTHeaderHitInfo);
+    procedure VSTCompareNodes(Sender: TBaseVirtualTree; Node1, Node2: PVirtualNode; Column: TColumnIndex;
+      var Result: Integer);
   private
     FValuesList: TList<TTreeData>;
     FDataArr: TDataArr;
@@ -549,7 +560,7 @@ begin
 //  ActFillTreeByArrayGExecute(Sender);
   ActFillTreeByArrayExecute(Sender);
   c:= GetTickCount;
-  Caption:= Format('Get data time: %d msec| Build Tree: %d',[b-a, c-b]);
+  Caption:= Format('Get data time: %d msec| Build Tree time: %d',[b-a, c-b]);
 end;
 
 procedure TForm1.VSTAddToSelection(Sender: TBaseVirtualTree; Node: PVirtualNode);
@@ -562,6 +573,28 @@ begin
                                       ])
   else
     Label1.Caption:= Format('Selected Node Count: %d',[Sender.SelectedCount]);
+end;
+
+procedure TForm1.VSTAdvancedHeaderDraw(Sender: TVTHeader; var PaintInfo: THeaderPaintInfo;
+  const Elements: THeaderPaintElements);
+begin
+  if (hpeBackground in Elements) then
+  begin
+    PaintInfo.PaintRectangle.Inflate(0,30);
+    PaintInfo.TargetCanvas.Pen.Color:= clRed;
+    PaintInfo.TargetCanvas.Pen.Style:= psSolid;
+    PaintInfo.TargetCanvas.Pen.Width:= 5;
+    PaintInfo.TargetCanvas.Brush.Color:= clBtnFace;
+    PaintInfo.TargetCanvas.FillRect(PaintInfo.PaintRectangle);
+    PaintInfo.TargetCanvas.FrameRect(PaintInfo.PaintRectangle);
+    PaintInfo.TargetCanvas.FloodFill(0,0,clYellow,fsSurface);
+  end;
+end;
+
+procedure TForm1.VSTCompareNodes(Sender: TBaseVirtualTree; Node1, Node2: PVirtualNode; Column: TColumnIndex;
+  var Result: Integer);
+begin
+  Result := WideCompareStr(VST.Text[Node1, Column], VST.Text[Node2, Column]);
 end;
 
 procedure TForm1.VSTFreeNode(Sender: TBaseVirtualTree; Node: PVirtualNode);
@@ -588,6 +621,25 @@ begin
     2: CellText:= PTreeData(Sender.GetNodeData(Node))^.Mkb_code;
     3: CellText:= PTreeData(Sender.GetNodeData(Node))^.Mkb_caption;
   end;
+end;
+
+procedure TForm1.VSTHeaderClick(Sender: TVTHeader; HitInfo: TVTHeaderHitInfo);
+begin
+  if (HitInfo.Button = TMouseButton.mbLeft) then
+  begin
+    Sender.SortColumn:= HitInfo.Column;
+//    if (Sender.SortDirection = sdAscending)
+//      then Sender.SortDirection:= sdDescending
+//      else Sender.SortDirection:= sdAscending;
+
+    VST.SortTree(Sender.SortColumn,Sender.SortDirection);
+  end;
+end;
+
+procedure TForm1.VSTHeaderDrawQueryElements(Sender: TVTHeader; var PaintInfo: THeaderPaintInfo;
+  var Elements: THeaderPaintElements);
+begin
+  Elements := [hpeBackground];
 end;
 
 end.
