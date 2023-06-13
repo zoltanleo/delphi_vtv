@@ -41,6 +41,8 @@ type
     Mkb_caption: string;
   end;
 
+  TDataArr = array of TTreeData;
+
   TForm1 = class(TForm)
     VST: TVirtualStringTree;
     mds_m: TMemTableEh;
@@ -50,6 +52,8 @@ type
     ActFillTreeByArrayG: TAction;
     mds_d: TMemTableEh;
     ActFillArrayG: TAction;
+    ActFillArray: TAction;
+    ActFillTreeByArray: TAction;
     procedure ActFillMDSExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -61,12 +65,16 @@ type
     procedure ActFillArrayGExecute(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure ActFillTreeByArrayGExecute(Sender: TObject);
+    procedure ActFillArrayExecute(Sender: TObject);
+    procedure ActFillTreeByArrayExecute(Sender: TObject);
   private
     FValuesList: TList<TTreeData>;
+    FDataArr: TDataArr;
     { Private declarations }
   public
     { Public declarations }
     property ValuesList: TList<TTreeData> read FValuesList;
+    property DataArr: TDataArr read FDataArr;
   end;
 
 const
@@ -84,6 +92,60 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TForm1.ActFillArrayExecute(Sender: TObject);
+var
+  SL: TStringList;
+  i: Integer;
+  s, ss: string;
+  k,m, n: Integer;
+  MyRec: TTreeData;
+begin
+  SL:= TStringList.Create;
+
+  try
+    SL.LoadFromFile(DataFile,TEncoding.UTF8);
+
+    n:= 0;
+    for i := 0 to Pred(SL.Count) do
+    begin
+      if (Pos(ExcludeStr1,SL.Strings[i]) = 0) then
+        if (Pos(ExcludeStr2,SL.Strings[i]) = 0) then Continue;
+      Inc(n);
+    end;
+
+    SetLength(FDataArr,n);
+
+    n:= 0;
+    for i := 0 to Pred(SL.Count) do
+    begin
+      if (Pos(ExcludeStr1,SL.Strings[i]) = 0) then
+        if (Pos(ExcludeStr2,SL.Strings[i]) = 0) then Continue;
+
+      k:= PosEx(a,SL.Strings[i]) + System.Length(a);
+      m:= PosEx(b,SL.Strings[i],k);
+      MyRec.Mkb_code := Copy(SL.Strings[i],k,m-k);
+
+      k:= m + System.Length(b);
+      m:= PosEx(c,SL.Strings[i],k);
+      MyRec.Mkb_caption:= Copy(SL.Strings[i],k,m-k);
+
+      k:= m + System.Length(c);
+      m:= PosEx(d,SL.Strings[i],k);
+      MyRec.ParentID:= StrToInt(Copy(SL.Strings[i],k,m-k));
+
+      k:= m + System.Length(d);
+      m:= PosEx(e,SL.Strings[i],k);
+      MyRec.ID:= StrToInt(Copy(SL.Strings[i],k,m-k));
+
+      FDataArr[n]:= MyRec;
+      Inc(n);
+    end;
+
+  finally
+    SL.Free;
+  end;
+end;
 
 procedure TForm1.ActFillArrayGExecute(Sender: TObject);
 var
@@ -180,6 +242,39 @@ begin
   finally
     mds_m.EnableControls;
     FreeAndNil(SL);
+  end;
+end;
+
+procedure TForm1.ActFillTreeByArrayExecute(Sender: TObject);
+  procedure AddNodes(ANode: PVirtualNode; aID: Integer);
+  var
+    Node: PVirtualNode;
+    Data: PTreeData;
+    i: Integer;
+  begin
+    //иницилизируем переменные
+    Data:= nil;
+    Node:= nil;
+
+    for i := Low(DataArr) to High(DataArr) do
+      if ((TTreeData(DataArr[i]).ParentID = aID) and (TTreeData(DataArr[i]).ID <> 0)) then
+    begin
+      Node:= VST.AddChild(ANode);
+      Data:= VST.GetNodeData(Node);
+      Data^.ID:= TTreeData(DataArr[i]).ID;
+      Data^.ParentID:= TTreeData(DataArr[i]).ParentID;
+      Data^.Mkb_code:= TTreeData(DataArr[i]).Mkb_code;
+      Data^.Mkb_caption:= TTreeData(DataArr[i]).Mkb_caption;
+
+      AddNodes(Node,TTreeData(DataArr[i]).ID);
+    end;
+  end;
+begin
+  try
+    VST.BeginUpdate;
+    AddNodes(nil,0);
+  finally
+    VST.EndUpdate;
   end;
 end;
 
@@ -369,13 +464,14 @@ begin
                                   toAutoChangeScale];
 
 
-    Header.AutoSizeIndex:= 2;
+    Header.AutoSizeIndex:= 0;
     Header.Options:= Header.Options
-                      + [hoAutoResize, hoColumnResize, {hoOwnerDraw,} hoShowHint, hoShowSortGlyphs, hoVisible]
+                      + [hoAutoResize, hoColumnResize, hoOwnerDraw, hoShowHint, hoShowSortGlyphs, hoVisible]
                       - [hoDrag];
     Header.Columns.Clear;
 
     Header.Columns.Add;
+    Header.MainColumn:= 0;
     i:= 0;
 
     with Header.Columns.Items[0] do
@@ -445,9 +541,11 @@ begin
 //  ActFillTreeByMDSExecute(Sender);
 
   a:= GetTickCount;
-  ActFillArrayGExecute(Sender);
+//  ActFillArrayGExecute(Sender);
+  ActFillArrayExecute(Sender);
   b:= GetTickCount;
-  ActFillTreeByArrayGExecute(Sender);
+//  ActFillTreeByArrayGExecute(Sender);
+  ActFillTreeByArrayExecute(Sender);
   c:= GetTickCount;
   Caption:= Format('Get data time: %d msec| Build Tree: %d',[b-a, c-b]);
 end;

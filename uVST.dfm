@@ -62,6 +62,14 @@ object Form1: TForm1
       Caption = 'ActFillArrayG'
       OnExecute = ActFillArrayGExecute
     end
+    object ActFillArray: TAction
+      Caption = 'ActFillArray'
+      OnExecute = ActFillArrayExecute
+    end
+    object ActFillTreeByArray: TAction
+      Caption = 'ActFillTreeByArray'
+      OnExecute = ActFillTreeByArrayExecute
+    end
   end
   object mds_d: TMemTableEh
     ExternalMemData = mds_m
