@@ -28,24 +28,23 @@ object Form1: TForm1
   object VST: TVirtualStringTree
     Left = 8
     Top = 8
-    Width = 800
+    Width = 796
     Height = 289
     AccessibleName = 'www'
     Anchors = [akLeft, akTop, akRight, akBottom]
     Header.AutoSizeIndex = 0
-    Header.DefaultHeight = 25
+    Header.DefaultHeight = 18
     Header.Font.Charset = DEFAULT_CHARSET
     Header.Font.Color = clWindowText
     Header.Font.Height = -12
     Header.Font.Name = 'Segoe UI'
     Header.Font.Style = []
-    Header.Height = 25
+    Header.Height = 40
     Header.Options = [hoAutoResize, hoColumnResize, hoOwnerDraw, hoShowHint, hoShowSortGlyphs, hoVisible, hoAutoSpring, hoFullRepaintOnResize, hoDisableAnimatedResize, hoHeaderClickAutoSort, hoAutoColumnPopupMenu, hoAutoResizeInclCaption]
     Header.ParentFont = False
     HintMode = hmTooltip
     ParentShowHint = False
     ShowHint = True
-    StyleName = 'Windows'
     TabOrder = 0
     TreeOptions.AutoOptions = [toAutoDropExpand, toAutoScroll, toAutoScrollOnExpand, toAutoSort, toAutoSpanColumns, toAutoTristateTracking, toAutoDeleteMovedNodes, toAutoChangeScale]
     TreeOptions.MiscOptions = [toFullRepaintOnResize, toInitOnSave, toToggleOnDblClick, toWheelPanning]
@@ -59,6 +58,7 @@ object Form1: TForm1
     OnGetNodeDataSize = VSTGetNodeDataSize
     OnHeaderClick = VSTHeaderClick
     OnHeaderDrawQueryElements = VSTHeaderDrawQueryElements
+    OnMeasureItem = VSTMeasureItem
     Touch.InteractiveGestures = [igPan, igPressAndTap]
     Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
     Columns = <
@@ -67,7 +67,7 @@ object Form1: TForm1
         Options = [coAllowClick, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAutoSpring, coSmartResize, coAllowFocus, coWrapCaption, coUseCaptionAlignment, coEditable, coStyleColor]
         Position = 0
         Text = 'ID'
-        Width = 143
+        Width = 145
       end
       item
         CaptionAlignment = taCenter
@@ -86,10 +86,10 @@ object Form1: TForm1
       item
         CaptionAlignment = taCenter
         Color = clWindow
-        Options = [coAllowClick, coEnabled, coParentBidiMode, coResizable, coShowDropMark, coVisible, coAutoSpring, coSmartResize, coAllowFocus, coWrapCaption, coUseCaptionAlignment, coEditable]
+        Options = [coAllowClick, coEnabled, coParentBidiMode, coResizable, coShowDropMark, coVisible, coAutoSpring, coSmartResize, coAllowFocus, coWrapCaption, coUseCaptionAlignment, coEditable, coStyleColor]
         Position = 3
         Text = #1053#1072#1079#1074#1072#1085#1080#1077' '#1052#1050#1041
-        Width = 453
+        Width = 447
       end>
   end
   object mds_m: TMemTableEh

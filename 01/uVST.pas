@@ -80,6 +80,8 @@ type
     procedure VSTHeaderClick(Sender: TVTHeader; HitInfo: TVTHeaderHitInfo);
     procedure VSTCompareNodes(Sender: TBaseVirtualTree; Node1, Node2: PVirtualNode; Column: TColumnIndex;
       var Result: Integer);
+    procedure VSTMeasureItem(Sender: TBaseVirtualTree; TargetCanvas: TCanvas; Node: PVirtualNode;
+      var NodeHeight: Integer);
   private
     FValuesList: TList<TTreeData>;
     FDataArr: TDataArr;
@@ -537,6 +539,9 @@ begin
 //                      + [coAllowClick, coEnabled, coParentBidiMode,
 //                        coParentColor, coResizable, coShowDropMark,
 //                        coVisible, coAllowFocus];
+
+  VST.Header.Height:= 50;
+  VST.DefaultNodeHeight:= 20;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
@@ -565,14 +570,19 @@ end;
 
 procedure TForm1.VSTAddToSelection(Sender: TBaseVirtualTree; Node: PVirtualNode);
 begin
-  if not (toMultiSelect in VST.TreeOptions.SelectionOptions)
-  then
-    Label1.Caption:= Format('Selected Item:  %s [%s]',[
-           PTreeData(Sender.GetNodeData(Node))^.Mkb_caption,
-           PTreeData(Sender.GetNodeData(Node))^.Mkb_code
-                                      ])
-  else
-    Label1.Caption:= Format('Selected Node Count: %d',[Sender.SelectedCount]);
+//  if not (toMultiSelect in VST.TreeOptions.SelectionOptions)
+//  then
+//    Label1.Caption:= Format('Selected Item:  %s [%s]',[
+//           PTreeData(Sender.GetNodeData(Node))^.Mkb_caption,
+//           PTreeData(Sender.GetNodeData(Node))^.Mkb_code
+//                                      ])
+//  else
+//    Label1.Caption:= Format('Selected Node Count: %d',[Sender.SelectedCount]);
+
+  if (vsExpanded in Node.States)
+    then Label1.Caption:= 'exp'
+    else Label1.Caption:= 'col';
+
 end;
 
 procedure TForm1.VSTAdvancedHeaderDraw(Sender: TVTHeader; var PaintInfo: THeaderPaintInfo;
@@ -581,9 +591,9 @@ begin
   if (hpeBackground in Elements) then
   begin
     PaintInfo.PaintRectangle.Inflate(0,30);
-    PaintInfo.TargetCanvas.Pen.Color:= clRed;
-    PaintInfo.TargetCanvas.Pen.Style:= psSolid;
-    PaintInfo.TargetCanvas.Pen.Width:= 5;
+//    PaintInfo.TargetCanvas.Pen.Color:= clRed;
+//    PaintInfo.TargetCanvas.Pen.Style:= psSolid;
+//    PaintInfo.TargetCanvas.Pen.Width:= 5;
     PaintInfo.TargetCanvas.Brush.Color:= clBtnFace;
     PaintInfo.TargetCanvas.FillRect(PaintInfo.PaintRectangle);
     PaintInfo.TargetCanvas.FrameRect(PaintInfo.PaintRectangle);
@@ -640,6 +650,12 @@ procedure TForm1.VSTHeaderDrawQueryElements(Sender: TVTHeader; var PaintInfo: TH
   var Elements: THeaderPaintElements);
 begin
   Elements := [hpeBackground];
+end;
+
+procedure TForm1.VSTMeasureItem(Sender: TBaseVirtualTree; TargetCanvas: TCanvas; Node: PVirtualNode;
+  var NodeHeight: Integer);
+begin
+//  NodeHeight:= 50;
 end;
 
 end.
